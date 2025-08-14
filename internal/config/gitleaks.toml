@@ -1,0 +1,31 @@
+[[rules]]
+id = "aws-access-token"
+description = "AWS Access Token"
+regex = '''\b((?:A3T[A-Z0-9]|AKIA|ASIA|ABIA|ACCA)[A-Z2-7]{16})\b'''
+keywords = ["AKIA", "ASIA"]
+
+[[rules]]
+id = "github-pat"
+description = "GitHub Personal Access Token"
+regex = '''ghp_[0-9a-zA-Z]{36}'''
+keywords = ["ghp_"]
+
+[[rules]]
+id = "slack-webhook-url"
+description = "Slack Webhook"
+regex = '''https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8,12}/[a-zA-Z0-9_]{24}'''
+keywords = ["hooks.slack.com"]
+
+[[rules]]
+id = "private-key"
+description = "Asymmetric Private Key"
+regex = '''-----BEGIN (?:[A-Z\s]+) PRIVATE KEY-----'''
+keywords = ["-----BEGIN"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(key|api|token|secret|password)"?\s*[:=]\s*["']([0-9a-zA-Z\-_.=]{20,})["']'''
+secretGroup = 2
+entropy = 3.5
+keywords = ["key", "api", "token", "secret", "password"]

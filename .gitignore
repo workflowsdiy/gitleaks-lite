@@ -1,0 +1,18 @@
+# Compiled Go binaries
+gitleaks-lit
+gitleaks-lit.exe
+
+# Go toolchain archive
+go*.tar.gz
+
+# IDE and editor directories
+.vscode/
+.idea/
+
+# Test coverage files
+*.out
+*.cover
+
+# OS-specific files
+.DS_Store
+Thumbs.db
