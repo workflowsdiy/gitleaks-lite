@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gitleaks-Lite | Simple, AI-Powered Secret Scanning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Modern scrollbar from the style guide */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            /* slate-800 */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            /* slate-600 */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+            /* slate-500 */
+        }
+
+        /* Style for code blocks */
+        .code-block::before {
+            content: '$';
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            color: #94a3b8;
+            /* slate-400 */
+        }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-slate-300 font-sans antialiased">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- Header -->
+        <header class="text-center mb-20 border-b border-slate-700 pb-12">
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">Gitleaks-Lite</h1>
+            <p class="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">A minimalist, containerized CLI tool to rapidly
+                scan Git repositories for secrets, with an optional AI-powered validation layer to eliminate false
+                positives.</p>
+            <div class="mt-8 flex justify-center">
+                <a href="https://github.com/workflowsdiy/gitleaks-lite"
+                    class="bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
+                    View on GitHub
+                </a>
+            </div>
+        </header>
+
+        <!-- Features Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white text-center mb-2">Scan for Secrets, Without the Noise</h2>
+            <p class="text-slate-400 mb-12 text-center max-w-2xl mx-auto">Gitleaks-Lite is built for developers who need
+                fast, accurate results without complex configuration.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1: Zero-Config -->
+                <div class="bg-slate-800 rounded-xl p-6 ring-1 ring-slate-700">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-500/10 mb-4">
+                        <svg class="w-6 h-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white">Zero Configuration</h3>
+                    <p class="text-slate-400 mt-2">No config files needed. A curated, high-confidence ruleset is
+                        built-in for immediate, effective scanning.</p>
+                </div>
+
+                <!-- Feature 2: AI Validation -->
+                <div class="bg-slate-800 rounded-xl p-6 ring-1 ring-slate-700">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-500/10 mb-4">
+                        <svg class="w-6 h-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.672-2.672L11.25 18l1.938-.648a3.375 3.375 0 002.672-2.672L16.25 13.5l.648 1.938a3.375 3.375 0 002.672 2.672L21.5 18l-1.938.648a3.375 3.375 0 00-2.672 2.672z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white">AI-Powered Validation</h3>
+                    <p class="text-slate-400 mt-2">Optionally use the Google Gemini API to analyze context and
+                        intelligently filter out false positives from test data or examples.</p>
+                </div>
+
+                <!-- Feature 3: Containerized -->
+                <div class="bg-slate-800 rounded-xl p-6 ring-1 ring-slate-700">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-500/10 mb-4">
+                        <svg class="w-6 h-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white">Containerized & Secure</h3>
+                    <p class="text-slate-400 mt-2">Runs in a minimal, non-root Docker container. The only dependency is
+                        Docker itself, ensuring a secure and isolated environment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">A Simple, Powerful Two-Phase Process</h2>
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <!-- Step 1 -->
+                <div class="flex items-center bg-slate-800 p-4 rounded-lg ring-1 ring-slate-700">
+                    <span class="text-4xl font-extrabold text-sky-400 w-12 text-center">1</span>
+                    <div class="ml-4">
+                        <p class="font-bold text-white">High-Speed Regex Scan</p>
+                        <p class="text-sm text-slate-400">The tool first performs a fast, local scan of the entire Git
+                            history, flagging all potential findings.</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex items-center bg-slate-800 p-4 rounded-lg ring-1 ring-slate-700">
+                    <span class="text-4xl font-extrabold text-slate-300 w-12 text-center">2</span>
+                    <div class="ml-4">
+                        <p class="font-bold text-white">Optional: AI Validation</p>
+                        <p class="text-sm text-slate-400">If enabled, each finding and its code context is sent to the
+                            Gemini API for a smart security review.</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex items-center bg-slate-800 p-4 rounded-lg ring-1 ring-slate-700">
+                    <span class="text-4xl font-extrabold text-slate-400 w-12 text-center">3</span>
+                    <div class="ml-4">
+                        <p class="font-bold text-white">High-Confidence Report</p>
+                        <p class="text-sm text-slate-400">The final output contains only confirmed secrets, resulting in
+                            a clean, actionable report in your console or as JSON.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get Started Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Get Started in Seconds</h2>
+            <div class="bg-slate-800 rounded-xl shadow-lg ring-1 ring-slate-700 max-w-4xl mx-auto">
+                <div class="p-6 border-b border-slate-700">
+                    <h3 class="text-xl font-semibold text-white">1. Build the Docker Image</h3>
+                    <p class="text-slate-400 mt-1">First, clone the repository and build the self-contained Docker
+                        image.</p>
+                    <div class="relative bg-slate-900 rounded-lg mt-4">
+                        <pre class="code-block p-4 pl-8 text-slate-300 overflow-x-auto"><code class="language-bash font-mono text-sm">git clone https://github.com/workflowsdiy/gitleaks-lite.git
+cd gitleaks-lite
+docker build -t gitleaks-lite .</code></pre>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-white">2. Run a Scan</h3>
+                    <p class="text-slate-400 mt-1">Scan any local Git repository by mounting it as a volume. Enable AI
+                        validation by adding your API key.</p>
+                    <div class="relative bg-slate-900 rounded-lg mt-4">
+                        <pre class="code-block p-4 pl-8 text-slate-300 overflow-x-auto"><code class="language-bash font-mono text-sm"># Standard Scan (Regex-Only)
+docker run --rm -v "/path/to/your/repo:/scan" gitleaks-lite git /scan
+
+# GenAI-Enhanced Scan
+docker run --rm -v "/path/to/repo:/scan" \
+  -e GEMINI_API_KEY="YOUR_API_KEY" \
+  gitleaks-lite git /scan</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy Section -->
+        <section>
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Privacy First: You Control Your Data</h2>
+            <div
+                class="bg-slate-800 rounded-xl p-6 ring-1 ring-slate-700 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div>
+                    <h4 class="font-semibold text-white mb-3 flex items-center">
+                        <svg class="w-5 h-5 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        What IS Sent to Gemini
+                    </h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start"><span class="text-green-400 mr-2">✔</span><span
+                                class="text-slate-300">The potential secret string itself.</span></li>
+                        <li class="flex items-start"><span class="text-green-400 mr-2">✔</span><span
+                                class="text-slate-300">A small, surrounding code snippet for context.</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-3 flex items-center">
+                        <svg class="w-5 h-5 text-red-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        What is NOT Sent
+                    </h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start"><span class="text-red-400 mr-2">✖</span><span
+                                class="text-slate-300">Filenames or full file contents.</span></li>
+                        <li class="flex items-start"><span class="text-red-400 mr-2">✖</span><span
+                                class="text-slate-300">Any Git metadata (author, commit hash, etc).</span></li>
+                        <li class="flex items-start"><span class="text-red-400 mr-2">✖</span><span
+                                class="text-slate-300">Your repository name or origin.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center mt-20 border-t border-slate-700 pt-8">
+            <p class="text-slate-400">Gitleaks-Lite is an open-source project licensed under MIT.</p>
+            <p class="mt-2">
+                <a href="https://github.com/workflowsdiy/gitleaks-lite"
+                    class="text-sky-400 hover:text-sky-300 hover:underline">Contribute or star the project on GitHub</a>
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
