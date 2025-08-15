@@ -34,25 +34,21 @@ func NewValidator(ctx context.Context) (*Validator, error) {
 	}
 
 	model := client.GenerativeModel("gemini-2.5-flash")
-	model.SetTemperature(0.0) // We want deterministic results
+	model.SetTemperature(0.0)
 	return &Validator{client: model}, nil
 }
 
-// THIS IS THE NEW HELPER FUNCTION
 func cleanGeminiResponse(raw string) string {
-	// The LLM often wraps the JSON in a markdown block.
-	// We need to remove the ```json ... ``` part.
 	if strings.HasPrefix(raw, "```json") {
 		raw = strings.TrimPrefix(raw, "```json")
 		raw = strings.TrimSuffix(raw, "```")
 	}
-	// Also trim any leading/trailing whitespace or newlines.
 	return strings.TrimSpace(raw)
 }
 
 func (v *Validator) Validate(secret, codeContext string) (*ValidationResult, error) {
 	prompt := fmt.Sprintf(`
-	You are a security expert specializing in secret detection.
+	You are a security expert specializing in secret detection. Your primary goal is to prevent false positives while being conservative.
 	A regular expression has flagged the string "%s" as a potential leaked secret in the following code snippet:
 
 	--- CODE CONTEXT ---
@@ -60,8 +56,10 @@ func (v *Validator) Validate(secret, codeContext string) (*ValidationResult, err
 	--------------------
 
 	Your task is to analyze this and determine if it is a real, active secret or a false positive.
-	False positives include test data, placeholder values, example keys, or commented-out code.
+	False positives are things like test data, placeholder values (e.g., "YOUR_API_KEY_HERE"), example keys in documentation, or commented-out code.
 	
+    **If there is any ambiguity, err on the side of caution and classify it as a secret.**
+
 	Respond ONLY with a valid JSON object in the following format:
 	{"is_secret": boolean, "confidence": "High/Medium/Low", "reason": "A brief justification for your decision."}
 	`, secret, codeContext)
@@ -72,21 +70,32 @@ func (v *Validator) Validate(secret, codeContext string) (*ValidationResult, err
 		return nil, fmt.Errorf("failed to generate content from Gemini: %w", err)
 	}
 
-	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
-		return nil, fmt.Errorf("received an empty response from Gemini API")
+	// --- CORRECTED LOGIC TO ACCESS RESPONSE STRUCTURE ---
+	// 1. Check if resp.Candidates slice is populated.
+	if len(resp.Candidates) == 0 {
+		return nil, fmt.Errorf("received an empty response from Gemini API (no candidates)")
+	}
+	// 2. Access the first candidate.
+	candidate := resp.Candidates[0]
+
+	// 3. Check if the candidate's Content field is not nil and Parts slice is not empty.
+	if candidate.Content == nil || len(candidate.Content.Parts) == 0 {
+		return nil, fmt.Errorf("received an empty response from Gemini API (no content parts found in candidate)")
 	}
 
-	rawJSON, ok := resp.Candidates[0].Content.Parts[0].(genai.Text)
+	// 4. Access the first part from the candidate's content, which should be genai.Text.
+	rawJSON, ok := candidate.Content.Parts[0].(genai.Text)
 	if !ok {
-		return nil, fmt.Errorf("unexpected response format from Gemini API")
+		return nil, fmt.Errorf("unexpected response format from Gemini API (expected genai.Text part)")
 	}
+	// --- END CORRECTED LOGIC ---
 
-	// USE THE CLEANING FUNCTION HERE
 	cleanedJSON := cleanGeminiResponse(string(rawJSON))
 
 	var result ValidationResult
 	if err := json.Unmarshal([]byte(cleanedJSON), &result); err != nil {
 		log.Warn().Str("raw_response", string(rawJSON)).Msg("Failed to unmarshal JSON from Gemini, treating as secret.")
+		// Fallback: if JSON is malformed, conservatively treat as a secret.
 		return &ValidationResult{IsSecret: true, Confidence: "Low", Reason: "Failed to parse AI response."}, nil
 	}
 

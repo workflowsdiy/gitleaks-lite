@@ -19,16 +19,14 @@ FROM alpine:latest
 # Install git, which is the only runtime dependency
 RUN apk add --no-cache git
 
-# THIS IS THE NEW LINE
-# Mark any directory mounted into the container as safe for Git operations.
-# This resolves ownership issues when mounting volumes.
-RUN git config --global --add safe.directory '*'
-
 # Copy the binary from the builder stage
 COPY --from=builder /app/gitleaks-lite /usr/local/bin/gitleaks-lite
 
-# Set the entrypoint for the container
-ENTRYPOINT ["gitleaks-lite"]
+# Copy the entrypoint wrapper script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Set the entrypoint for the container to our new script
+ENTRYPOINT ["entrypoint.sh"]
 
 # The default command can be to show help
 CMD ["--help"]
